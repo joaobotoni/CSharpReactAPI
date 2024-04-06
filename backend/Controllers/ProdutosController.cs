@@ -50,6 +50,44 @@ namespace backend.Controllers
             }
         }
 
+        [HttpGet("name")]
+        public async Task<ActionResult<Produto>> GetProdutoByName(string name)
+        {
+            try
+            {
+                var produto = await _context.Produtos.FirstOrDefaultAsync(n => n.Name == name);
+                if (produto == null)
+                {
+                    return NotFound(name);
+                }
+                return produto;
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Erro interno do servidor: {ex.Message}");
+            }
+
+        }
+
+        [HttpGet("categoria")]
+        public async Task<ActionResult<Produto>> GetProdutoByCategoria(string categoria)
+        {
+            try
+            {
+                var produto = await _context.Produtos.FirstOrDefaultAsync(c => c.Categoria == categoria);
+                if (produto == null)
+                {
+                    return NotFound(categoria);
+                }
+                return produto;
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Erro interno do servidor: {ex.Message}");
+            }
+
+        }
+
         [HttpPost]
         public async Task<ActionResult<Produto>> PostProdutos(Produto produto)
         {
@@ -101,6 +139,7 @@ namespace backend.Controllers
             return NoContent();
 
         }
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProduto(long id)
         {
